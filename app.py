@@ -11,7 +11,7 @@ st.markdown("Using Traditional CV and Deep Learning (YOLOv8-Seg) with Depth Esti
 
 @st.cache_resource
 def load_models():
-    yolo = YOLO(r"runs\segment\train-4\weights\best.pt")
+    yolo = YOLO("runs/segment/train-4/weights/best.pt")
     midas = torch.hub.load("intel-isl/MiDaS", "MiDaS_small", trust_repo=True).to("cpu")
     midas.eval()
     transform = torch.hub.load("intel-isl/MiDaS", "transforms").small_transform
