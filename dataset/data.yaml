@@ -1,0 +1,8 @@
+path: D:\Kuliah\SEMESTER 4\Computer Vision\Project Pothole\dataset
+train: train/images
+val: test/images
+test: test/images
+
+nc: 1
+names:
+  0: pothole
