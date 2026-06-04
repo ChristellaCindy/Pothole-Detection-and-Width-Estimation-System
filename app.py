@@ -11,9 +11,26 @@ st.markdown("Using Traditional CV and Deep Learning (YOLOv8-Seg) with Depth Esti
 
 @st.cache_resource
 def load_models():
+    import os
+    import requests
+    
     yolo = YOLO("runs/segment/train-4/weights/best.pt")
-    midas = torch.hub.load("intel-isl/MiDaS", "MiDaS_small", trust_repo=True).to("cpu")
+    
+    weight_path = "midas_v21_small_256.pt"
+    weight_url = "https://github.com/isl-org/MiDaS/releases/download/v2_1/midas_v21_small_256.pt"
+    
+    if not os.path.exists(weight_path):
+        with st.spinner("Loading..."):
+            response = requests.get(weight_url, stream=True)
+            with open(weight_path, "wb") as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    if chunk:
+                        f.write(chunk)
+                        
+    midas = torch.hub.load("intel-isl/MiDaS", "MiDaS_small", pretrained=False, trust_repo=True).to("cpu")
+    midas.load_state_dict(torch.load(weight_path, map_location="cpu"))
     midas.eval()
+    
     transform = torch.hub.load("intel-isl/MiDaS", "transforms").small_transform
     return yolo, midas, transform
 
