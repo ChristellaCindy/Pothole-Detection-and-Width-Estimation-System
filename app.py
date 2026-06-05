@@ -31,8 +31,8 @@ def load_models():
     
     return yolo, midas, transform
 
-# with st.spinner("⏳ Loading models..."):
-#     yolo_model, midas_model, midas_transform = load_models()
+with st.spinner("⏳ Loading models..."):
+    yolo_model, midas_model, midas_transform = load_models()
 
 def calculate_stats(widths):
     if not widths:
@@ -75,8 +75,8 @@ if uploaded_file is not None:
         st.error("Please upload only one image at a time.")
     else:
 
-        with st.spinner("⏳ Loading models..."):
-            yolo_model, midas_model, midas_transform = load_models()
+        # with st.spinner("⏳ Loading models..."):
+        #     yolo_model, midas_model, midas_transform = load_models()
         
         file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
         img_bgr = cv2.imdecode(file_bytes, 1)
