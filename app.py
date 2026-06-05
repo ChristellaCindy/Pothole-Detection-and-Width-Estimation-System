@@ -20,15 +20,13 @@ def load_models():
     
 
     yolo = YOLO("runs/segment/train-4/weights/best.pt")
-    
     gc.collect() 
     
-    midas = torch.hub.load("intel-isl/MiDaS", "MiDaS_small", trust_repo=True).to("cpu")
+    midas = torch.hub.load("intel-isl/MiDaS", "MiDaS_small", pretrained=False, trust_repo=True).to("cpu")
+    midas.load_state_dict(torch.load("midas_v21_small_256.pt", map_location="cpu", weights_only=True))
     midas.eval()
     
     transform = torch.hub.load("intel-isl/MiDaS", "transforms").small_transform
-    
-    # Sapu lagi memorinya biar webnya enteng pas dijalanin
     gc.collect() 
     
     return yolo, midas, transform
